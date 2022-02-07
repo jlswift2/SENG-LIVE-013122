@@ -32,6 +32,23 @@ const pokemon = [
 ];
 
 const pokeContainer = document.querySelector("#poke-container");
+const pokeForm = document.querySelector('#poke-form')
+
+pokeForm.addEventListener('submit', function(event){
+  event.preventDefault();
+  const name = document.querySelector('#name-input').value.toLowerCase()
+  const img = document.querySelector('#img-input').value
+
+  let newChar = {
+  id: 6, //must change
+  name: name,
+  img: img,
+  likes: 0,
+  }
+
+  renderPokemon(newChar)
+  pokeForm.requestFullscreen()
+})
 
 pokemon.forEach(function (char) {
   renderPokemon(char);
@@ -49,6 +66,32 @@ function renderPokemon(pokemon) {
   const pokeName = document.createElement("h3");
   pokeName.textContent = pokemon.name;
 
-  pokeCard.append(pokeImg, pokeName);
+  const pokeLikes = document.createElement("h3");
+  pokeLikes.textContent = "Likes: ";
+
+  const likesNum = document.createElement("h5");
+  likesNum.classList.add('likes-num');
+  likesNum.textContent = pokemon.likes;
+
+  const likesBttn = document.createElement("button")
+  likesBttn.className = "likes-bttn";
+  likesBttn.textContent = "♥";
+  likesBttn.addEventListener('click', function() {
+    ++pokemon.likes
+    likesNum.textContent = pokemon.likes
+  });
+
+  const deleteBttn = document.createElement("button");
+  deleteBttn.className = 'delete-bttn';
+  deleteBttn.textContent = "Delete"
+  deleteBttn.addEventListener('click', (e) => e.target.parentNode.remove())
+
+  pokeCard.append(pokeImg, pokeName, pokeLikes, likesNum, likesBttn, deleteBttn);
   pokeContainer.appendChild(pokeCard);
+}
+
+
+function increaseLike(e) {
+  pokemon.likes++
+
 }
